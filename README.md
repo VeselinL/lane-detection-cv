@@ -1,6 +1,6 @@
 # Lane Detection using Computer Vision
 
-A simple lane detection system for autonomous driving applications, trained on the TuSimple dataset.
+A simple lane detection system using classical computer vision, demonstrated on the TuSimple dataset.
 
 ## 🎯 Project Goal
 
@@ -61,5 +61,3 @@ Currently implementing classical CV baseline.
 - Understanding the basics of autonomous driving perception
 
 ---
-
-*This project is part of my exploration into autonomous driving and embedded ML systems.*
