@@ -1,6 +1,6 @@
 # Lane Detection using Computer Vision
 
-A simple lane detection system using classical computer vision, demonstrated on a set of dashcam videos and sample images from the TuSimple dataset.
+A simple lane detection system using classical computer vision, demonstrated on a set of dashcam videos and sample images from the TuSimple dataset. Built to understand classical CV fundamentals before learning deep learning approaches.
 ## Demo
 ### Video Results
 <p align="center">
@@ -87,10 +87,3 @@ This project explores:
 - Real-time processing constraints
 - Tradeoffs between accuracy and computational cost
 - 
-## Next Steps
-
-- [x] Download and preprocess TuSimple dataset
-- [x] Implement classical CV pipeline
-- [ ] Train initial deep learning model
-- [ ] Evaluate and visualize results
-- [ ] Document optimization strategies for automotive deployment
