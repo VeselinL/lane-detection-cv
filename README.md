@@ -1,63 +1,96 @@
 # Lane Detection using Computer Vision
 
-A simple lane detection system using classical computer vision, demonstrated on the TuSimple dataset.
+A simple lane detection system using classical computer vision, demonstrated on a set of dashcam videos and sample images from the TuSimple dataset.
+## Demo
+### Video Results
+<p align="center">
+  <img src="Classical%20CV/videos/output/demo.gif" width="600" alt="Lane Detection Demo">
+</p>
 
-## 🎯 Project Goal
+### Image Results
+<p align="center">
+  <img src="Classical%20CV/visualization1.png" width="70%" />
+    <br>
+  <img src="Classical%20CV/visualization2.png" width="70%" />
+</p>
 
-Build a lightweight lane detection model that:
-- Detects lane boundaries in road images
-- Draws predicted lane lines
-- Demonstrates understanding of perception systems in autonomous vehicles
+## 🚗 How It Works
 
-## 🚗 Motivation
+### Pipeline Overview
+The system processes frames through 8 sequential steps:
+<p align="center">
+<img src="Classical%20CV/pipeline.png"  alt ="Visualization of the Pipeline"/>
+</p>
 
-Lane detection is a fundamental perception task in autonomous driving. This project explores:
-- Computer vision techniques for road scene understanding
+1. **Color Filtering** - Isolate white and yellow lane markings using HSL color space
+2. **Grayscale Conversion** - Reduce computational complexity
+3. **Gaussian Blur** - Reduce noise for cleaner edge detection
+4. **Canny Edge Detection** - Identify sharp intensity gradients
+5. **ROI Masking** - Focus on road area, ignore sky/trees
+6. **Hough Transform** - Detect straight lines in edge image
+7. **Slope Filtering** - Separate left/right lanes, reject noise
+8. **Temporal Smoothing** - Average across frames for stability
+
+### Key Algorithms
+
+**Canny Edge Detection**
+- Applies Sobel operators to find intensity gradients
+- Uses non-maximum suppression to thin edges
+- Applies hysteresis thresholding for robust edge selection
+
+**Hough Transform**
+- Converts image space (x, y) to parameter space (ρ, θ)
+- Each edge pixel votes for possible lines through it
+- Lines in image = peaks in accumulator array
+
+## Results
+
+**Works well on:**
+- Straight highways with clear markings
+- Well-lit conditions
+- High-contrast lane lines
+
+**Limitations:**
+- Struggles with sharp curves (Hough detects straight lines)
+- Sensitive to shadows and worn paint
+- Requires manual ROI tuning for different camera angles
+
+## Usage
+```bash
+# Process single video
+python main.py
+
+# Process image
+# Edit main.py to specify input/output paths
+
+# Visualize pipeline steps
+python visualize.py
+```
+
+## Requirements
+```bash
+pip install opencv-python numpy matplotlib
+```
+
+## Future Work
+
+- Implement polynomial lane fitting for curved roads
+- Compare with CNN-based segmentation (U-Net, ENet)
+- Adaptive thresholding for varying lighting conditions
+- Real-time optimization for embedded deployment
+
+## Learning Goals
+
+This project explores:
+- Classical computer vision techniques
+- Understanding why deep learning is needed (limitations of geometric approaches)
 - Real-time processing constraints
+- Tradeoffs between accuracy and computational cost
+- 
+## Next Steps
 
-## 📊 Dataset
-
-**TuSimple Lane Detection Challenge**
-- Highway driving scenarios
-- Annotated lane markings
-- 3,626 training images
-- 358 validation images
-
-## 🛠️ Approach
-
-**Phase 1: Classical CV Baseline**
-- Edge detection (Canny)
-- Hough transform for line detection
-- Region of interest masking
-
-**Phase 2: Deep Learning Model** *(planned)*
-- Lightweight CNN architecture
-- Lane segmentation
-- Post-processing for lane fitting
-
-**Phase 3: Optimization** *(future)*
-- Model quantization for embedded deployment
-- Inference time optimization
-- Discussion of TensorRT/ONNX deployment
-
-## 🚀 Status
-
-🔨 **Work in Progress**
-
-Currently implementing classical CV baseline.
-
-## 💡 Next Steps
-
-- [ ] Download and preprocess TuSimple dataset
-- [ ] Implement classical CV pipeline
+- [x] Download and preprocess TuSimple dataset
+- [x] Implement classical CV pipeline
 - [ ] Train initial deep learning model
 - [ ] Evaluate and visualize results
 - [ ] Document optimization strategies for automotive deployment
-
-## 🎓 Learning Goals
-
-- Understanding perception pipelines
-- Balancing accuracy vs. real-time performance
-- Understanding the basics of autonomous driving perception
-
----
