@@ -9,9 +9,9 @@ A simple lane detection system using classical computer vision, demonstrated on 
 
 ### Image Results
 <p align="center">
-  <img src="Classical%20CV/visualization1.png" width="70%" />
+  <img src="Classical%20CV/visualization1.png"/>
     <br>
-  <img src="Classical%20CV/visualization2.png" width="70%" />
+  <img src="Classical%20CV/visualization2.png" />
 </p>
 
 ## 🚗 How It Works
