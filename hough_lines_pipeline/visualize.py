@@ -92,4 +92,4 @@ def compare_results(img_paths):
 
 
 if __name__ == "__main__":
-    visualize_pipeline('images/tusimple/test1/1.jpg')
+    visualize_pipeline('../test_images/tusimple/test2/1.jpg')

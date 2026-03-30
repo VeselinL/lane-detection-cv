@@ -4,14 +4,14 @@ A simple lane detection system using classical computer vision, demonstrated on 
 ## Demo
 ### Video Results
 <p align="center">
-  <img src="Classical%20CV/videos/output/demo.gif" width="600" alt="Lane Detection Demo">
+  <img src="hough_lines_pipeline/demo/demo.gif" width="640" alt="Lane Detection Demo">
 </p>
 
 ### Image Results
 <p align="center">
-  <img src="Classical%20CV/visualization1.png" width="70%" />
+  <img src="hough_lines_pipeline/demo/visualization1.png" width="70%" />
     <br>
-  <img src="Classical%20CV/visualization2.png" width="70%" />
+  <img src="hough_lines_pipeline/demo/visualization2.png" width="70%" />
 </p>
 
 ## 🚗 How It Works
@@ -19,7 +19,7 @@ A simple lane detection system using classical computer vision, demonstrated on 
 ### Pipeline Overview
 The system processes frames through 8 sequential steps:
 <p align="center">
-<img src="Classical%20CV/pipeline.png"  alt ="Visualization of the Pipeline"/>
+<img src="hough_lines_pipeline/demo/pipeline.png"  alt ="Visualization of the Pipeline"/>
 </p>
 
 1. **Color Filtering** - Isolate white and yellow lane markings using HSL color space
