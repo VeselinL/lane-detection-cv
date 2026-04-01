@@ -34,6 +34,7 @@ def sliding_window(image, src_pts):
 
     left_lane_inds = []
     right_lane_inds = []
+
     for window in range(n_windows):
         winy_low = h - (window + 1) * window_height
         winy_high = h - window * window_height
@@ -44,8 +45,8 @@ def sliding_window(image, src_pts):
         rightx_low = rightx_base - margin
         rightx_high = rightx_base + margin
 
-        cv2.rectangle(image, (leftx_low, winy_low), (leftx_high, winy_high), (255, 255, 255), 2)
-        cv2.rectangle(image, (rightx_low, winy_low), (rightx_high, winy_high), (255, 255, 255), 2)
+        #cv2.rectangle(image, (leftx_low, winy_low), (leftx_high, winy_high), (255, 255, 255), 2)
+        #cv2.rectangle(image, (rightx_low, winy_low), (rightx_high, winy_high), (255, 255, 255), 2)
 
         good_left = ((nonzeroy >= winy_low) & (nonzeroy < winy_high) & (nonzerox >= leftx_low) & (nonzerox < leftx_high)).nonzero()[0]
         good_right = ((nonzeroy >= winy_low) & (nonzeroy < winy_high) & (nonzerox >= rightx_low) & (nonzerox < rightx_high)).nonzero()[0]
@@ -53,26 +54,29 @@ def sliding_window(image, src_pts):
         left_lane_inds.append(good_left)
         right_lane_inds.append(good_right)
 
-        leftx = nonzerox[good_left]
-        lefty = nonzeroy[good_left]
-        rightx = nonzerox[good_right]
-        righty = nonzeroy[good_right]
-
         if len(good_left) > minpix:
-            leftx_base = int(np.mean(leftx))
+            leftx_base = int(np.mean(good_left))
         if len(good_right) > minpix:
-            rightx_base = (np.mean(rightx))
-
-        #print(rightx.shape)
-        #left_fit = np.polyfit(lefty, leftx, 2)
-        #right_fit = np.polyfit(righty, rightx, 2)
-
-        #cv2.imshow("Image", image)
-        #cv2.waitKey(200)
+            rightx_base = int(np.mean(good_right))
 
 
+    leftx = nonzerox[left_lane_inds]
+    lefty = nonzeroy[left_lane_inds]
+    rightx = nonzerox[right_lane_inds]
+    righty = nonzeroy[right_lane_inds]
 
+    left_fit = np.polyfit(lefty, leftx, 2)
+    right_fit = np.polyfit(righty, rightx, 2)
 
+    #print(left_fit.shape)
+    #ploty = np.linspace(0, h - 1, h)
+    #left_fitx = left_fit[0] * ploty ** 2 + left_fit[1] * ploty + left_fit[2]
+    #right_fitx = right_fit[0] * ploty ** 2 + right_fit[1] * ploty + right_fit[2]
+
+    #print(left_fitx.shape)
+
+    #cv2.imshow("Image", image)
+    #cv2.waitKey(200)
 
 source = cv2.imread(f"../test_images/tusimple/test1/10.jpg")
 sliding_window(source, tusimple_test1_pts)
