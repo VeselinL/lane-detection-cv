@@ -13,23 +13,23 @@ tusimple_test1_pts = np.float32(
         ]
     )
 
-def process_frame(frame, src_pts):
+def process_frame(frame, src_pts, previous_lane_state=None, filter_config=None):
 
     h, w = frame.shape[:2]
     lane_width = 575
     left_margin = (w - lane_width) // 2
-    filtered = apply_hsl_color_filter(frame)
+    filtered = apply_hsl_color_filter(frame, filter_config)
     warped = warp_image(filtered, src_pts, get_dst_points(left_margin, lane_width, h))
     circles = draw_circles(frame.copy(), src_pts)
-    result, windows = sliding_windows(warped, frame, src_pts)
-    return circles, warped, windows, result
+    result, windows, lane_state = sliding_windows(warped, frame, src_pts, previous_lane_state)
+    return circles, warped, windows, result, lane_state
 
 def main():
     source = cv2.imread(f"../test_images/tusimple/test1/10.jpg")
     if source is None:
         print(f"could not read image 10.jpg")
         return
-    circles, warped, windows, result = process_frame(source, tusimple_test1_pts)
+    circles, warped, windows, result, _ = process_frame(source, tusimple_test1_pts)
 
     cv2.namedWindow("Final result", cv2.WINDOW_NORMAL)
     cv2.resizeWindow("Final result", 800, 500)

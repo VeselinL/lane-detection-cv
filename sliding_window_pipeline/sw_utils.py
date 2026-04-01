@@ -1,18 +1,26 @@
 import numpy as np
 import cv2
-import sys
 
-def get_histogram(image):
+
+def get_histogram(image, side_crop_ratio=0.15):
     h = image.shape[0]
     w = image.shape[1]
     mid = h // 2
     lower_half = image[mid:, :]
-    np.set_printoptions(threshold=sys.maxsize)
     histogram = np.sum(lower_half, axis=0)
-    horizontal_mid = w // 2
+    crop = int(w * side_crop_ratio)
+    left_bound = crop
+    right_bound = w - crop
 
-    leftx_base = np.argmax(histogram[:horizontal_mid])
-    rightx_base = np.argmax(histogram[horizontal_mid:]) + horizontal_mid
+    if right_bound - left_bound < 4:
+        left_bound = 0
+        right_bound = w
+
+    histogram_roi = histogram[left_bound:right_bound]
+    horizontal_mid = histogram_roi.shape[0] // 2
+
+    leftx_base = np.argmax(histogram_roi[:horizontal_mid]) + left_bound
+    rightx_base = np.argmax(histogram_roi[horizontal_mid:]) + left_bound + horizontal_mid
 
     return leftx_base, rightx_base
 
