@@ -7,35 +7,53 @@ This repository contains two lane-detection pipelines built with OpenCV and NumP
 
 ## Demo
 
-### Hough Pipeline Results
+### Hough Pipeline Demo Video
 <p align="center">
   <img src="hough_lines_pipeline/demo/demo.gif" width="640" alt="Lane Detection Demo">
 </p>
 
-### Hough Pipeline Visualizations
+### Hough Pipeline Result Gallery
 <p align="center">
   <img src="hough_lines_pipeline/demo/visualization1.png" width="70%" />
   <br>
   <img src="hough_lines_pipeline/demo/visualization2.png" width="70%" />
 </p>
 
-### Sliding Window Pipeline Results
+### Hough Pipeline Stage Visualizations
 <p align="center">
-  <img src="sliding_window_pipeline/demo/demo.webp" width="640" alt="Lane Detection Demo">
+  <img src="hough_lines_pipeline/demo/hough_pipeline1.png" width="70%" />
+<br>
+  <img src="hough_lines_pipeline/demo/hough_pipeline3.png" width="70%" />
 </p>
 
-### Sliding Window Visualizations
+
+### Sliding Window Demo Video
 <p align="center">
-  <img src="sliding_window_pipeline/output/images/tusimple/test3/10.jpg" width="70%" />
-  <br>
-  <img src="sliding_window_pipeline/output/images/tusimple/test4/10.jpg" width="70%" />
+  <img src="sliding_window_pipeline/demo/demo2.gif" width="640" alt="Lane Detection Demo">
 </p>
+
+### Sliding Window Result Gallery
+<p align="center">
+  <img src="sliding_window_pipeline/demo/visualize3.png" width="70%" />
+  <br>
+  <img src="sliding_window_pipeline/demo/visualize2.png" width="70%" />
+</p>
+
+### Sliding Window Stage Visualizations
+<p align="center">
+  <img src="sliding_window_pipeline/demo/sliding_window_pipeline1.png" width="70%" />
+    <br>
+  <img src="sliding_window_pipeline/demo/sliding_window_pipeline4.png" width="70%" />
+</p>
+
 
 ## Project Structure
 
 ```text
 hough_lines_pipeline/
   main.py
+  process_frame.py
+  process_video.py
   visualize.py
   hs_utils.py
 
@@ -45,6 +63,7 @@ sliding_window_pipeline/
   sliding_window.py
   sw_utils.py
   tune_thresholds.py
+  visualize.py
 
 utils/
   utils.py
@@ -122,7 +141,7 @@ pip install -r requirements.txt
 If you are not using the provided `requirements.txt`, install at least:
 
 ```bash
-pip install opencv-python numpy
+pip install opencv-python numpy matplotlib
 ```
 
 ## How to Run
@@ -131,7 +150,21 @@ The scripts use local imports and relative asset paths, so run them from the cor
 
 ### Hough Lines Pipeline
 
-Run the default video processor:
+Process an image:
+
+```bash
+cd hough_lines_pipeline
+PYTHONPATH=.. python3 process_frame.py
+```
+
+Process a video:
+
+```bash
+cd hough_lines_pipeline
+PYTHONPATH=.. python3 process_video.py
+```
+
+Run the default entry point:
 
 ```bash
 cd hough_lines_pipeline
@@ -147,8 +180,9 @@ PYTHONPATH=.. python3 visualize.py
 
 Notes:
 
-- `main.py` currently processes `../test_videos/test4.mp4`
-- output video path is currently set inside `hough_lines_pipeline/main.py`
+- `process_frame.py` currently opens `../test_images/tusimple/test1/10.jpg`
+- `process_video.py` currently processes `../test_videos/test4.mp4`
+- `main.py` forwards to the default video-processing entry point
 - adjust input/output paths directly in the script if you want a different file
 
 ### Sliding Window Pipeline
@@ -165,6 +199,13 @@ Process a video:
 ```bash
 cd sliding_window_pipeline
 PYTHONPATH=.. python3 process_video.py
+```
+
+Generate the pipeline visualization for a sample image:
+
+```bash
+cd sliding_window_pipeline
+PYTHONPATH=.. python3 visualize.py
 ```
 
 Tune threshold parameters live with OpenCV sliders:

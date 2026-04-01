@@ -1,7 +1,19 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-from main import get_roi_mask, apply_hsl_color_filter, detect_lanes
+from hough_lines_pipeline.main import detect_lanes
+from hough_lines_pipeline.hs_utils import get_roi_mask
+from utils.utils import apply_hsl_color_filter
+from sliding_window_pipeline.process_frame import process_frame
+
+SLIDING_WINDOW_POINTS = np.float32(
+    [
+        [565, 330],  # top left
+        [750, 330],  # top right
+        [1250, 715],  # bot right
+        [180, 715],  # bot left
+    ]
+)
 
 
 def visualize_pipeline(img_path):
@@ -12,8 +24,8 @@ def visualize_pipeline(img_path):
 
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     color_filtered = apply_hsl_color_filter(frame)
-    color_filtered_rgb = cv2.cvtColor(color_filtered, cv2.COLOR_BGR2RGB)
-    gray = cv2.cvtColor(color_filtered, cv2.COLOR_BGR2GRAY)
+    color_filtered_rgb = cv2.cvtColor(color_filtered, cv2.COLOR_GRAY2RGB)
+    gray = color_filtered
     blur = cv2.GaussianBlur(gray, (5, 5), 0)
     edges = cv2.Canny(blur, 50, 150)
     masked_edges = get_roi_mask(edges)
@@ -59,37 +71,47 @@ def visualize_pipeline(img_path):
 
     # Removed the redundant plot 9 to keep it clean or leave it blank
     plt.tight_layout(pad=1.5)
-    plt.savefig('pipeline.png', dpi=100, bbox_inches='tight')
+    plt.savefig('hough_pipeline1.png', dpi=100, bbox_inches='tight')
     plt.show()
 
 
-def compare_results(img_paths):
-    n = len(img_paths)
-    plt.figure(figsize=(12, 4 * n))
+def compare_results():
+    img_paths = [
+        "../test_images/tusimple/test4/10.jpg",
+    ]
+    source_points = SLIDING_WINDOW_POINTS
 
-    for i, img_path in enumerate(img_paths):
+    n = len(img_paths)
+    plt.figure(figsize=(16, 5 * n))
+    previous_lane_state = None
+
+    for index, img_path in enumerate(img_paths):
         frame = cv2.imread(img_path)
         if frame is None:
             continue
 
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        result = detect_lanes(frame)
+        _, _, _, result, previous_lane_state = process_frame(
+            frame,
+            source_points,
+            previous_lane_state,
+        )
         result_rgb = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
 
-        plt.subplot(n, 2, 2 * i + 1)
+        plt.subplot(n, 2, 2 * index + 1)
         plt.imshow(frame_rgb)
-        plt.title(f'Original - {img_path.split("/")[-1]}')
+        plt.title('1. Original Image')
         plt.axis('off')
 
-        plt.subplot(n, 2, 2 * i + 2)
+        plt.subplot(n, 2, 2 * index + 2)
         plt.imshow(result_rgb)
-        plt.title(f'Lane Detection')
+        plt.title('2. Image with Detected Lanes')
         plt.axis('off')
 
     plt.tight_layout()
-    plt.savefig('results_comparison.png', dpi=150, bbox_inches='tight')
+    plt.savefig('visualize4.png', dpi=150, bbox_inches='tight')
     plt.show()
 
 
 if __name__ == "__main__":
-    visualize_pipeline('../test_images/tusimple/test2/1.jpg')
+    compare_results()
